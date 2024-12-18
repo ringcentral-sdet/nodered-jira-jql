@@ -125,42 +125,40 @@ module.exports = function(RED) {
         this.log(config);
         var node = this;
         var url = config.url;
-        var user = this.credentials.username;
-        var password = this.credentials.password;
+        var token = this.credentials.token; // Assuming the token is stored in credentials
         var request = require("request");
 
-
         this.doRequest = function(options, callback) {
-            options.auth = {
-                'user': user,
-                'pass': password
+            options.headers = {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
             };
             this.log("DoRequest " + options);
             request(options, callback);
         }
 
-        this.create_comment = function(issuekey,commentDefinition,callback){
-          var options = {
-              rejectUnauthorized: false,
-              uri: decodeURIComponent(url + 'issue/'+issuekey+'/comment'),
-              body: commentDefinition,
-              method: 'POST',
-              followAllRedirects: true,
-              json: true
-          };
-          node.doRequest(options, callback);
+        this.create_comment = function(issuekey, commentDefinition, callback) {
+            var options = {
+                rejectUnauthorized: false,
+                uri: decodeURIComponent(url + 'issue/' + issuekey + '/comment'),
+                body: commentDefinition,
+                method: 'POST',
+                followAllRedirects: true,
+                json: true
+            };
+            node.doRequest(options, callback);
         }
 
-        this.update_comment = function(issuekey,commentDefinition,callback){
-          var options = {
-              rejectUnauthorized: false,
-              uri: decodeURIComponent(url + 'issue/'+issuekey+'/comment'),
-              body: commentDefinition,
-              method: 'PUT',
-              followAllRedirects: true,
-              json: true
-          };
-          node.doRequest(options, callback);
+        this.update_comment = function(issuekey, commentDefinition, callback) {
+            var options = {
+                rejectUnauthorized: false,
+                uri: decodeURIComponent(url + 'issue/' + issuekey + '/comment'),
+                body: commentDefinition,
+                method: 'PUT',
+                followAllRedirects: true,
+                json: true
+            };
+            node.doRequest(options, callback);
         }
 
         this.create = function(issueDefinition, callback) {
@@ -200,14 +198,12 @@ module.exports = function(RED) {
         }
 
         this.search = function(jql, options, callback) {
-
             var options = {
                 rejectUnauthorized: false,
                 uri: decodeURIComponent(url + 'search'),
                 method: 'POST',
                 json: true,
                 followAllRedirects: true,
-
                 body: {
                     jql: jql,
                     startAt: options.startAt || 0,
@@ -219,8 +215,6 @@ module.exports = function(RED) {
             this.log("Calling dorequest");
             this.doRequest(options, callback);
         }
-
-
     }
 
     function JiraIssueGetNode(config) {
@@ -381,11 +375,8 @@ module.exports = function(RED) {
 
     RED.nodes.registerType("jira-server", JiraServerNode, {
         credentials: {
-            username: {
+            token: {
                 type: "text"
-            },
-            password: {
-                type: "password"
             }
         }
     });

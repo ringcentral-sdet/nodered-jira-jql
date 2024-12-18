@@ -30,15 +30,12 @@
       }
     },
     credentials: {
-      username: {
+      token: {
         type: "text"
-      },
-      password: {
-        type: "password"
       }
     },
     label: function() {
-      return this.name ||  "jira-server";
+      return this.name || "jira-server";
     }
   });
 </script>
@@ -52,12 +49,8 @@
     <input type="text" id="node-config-input-url" placeholder="http://localhost/rest/api/2/">
   </div>
   <div class="form-row">
-    <label for="node-config-input-username"><i class="icon-tag"></i> Username</label>
-    <input type="text" id="node-config-input-username" placeholder="">
-  </div>
-  <div class="form-row">
-    <label for="node-config-input-password"><i class="icon-tag"></i> Password</label>
-    <input type="password" id="node-config-input-password" placeholder="">
+    <label for="node-config-input-token"><i class="icon-tag"></i> Token</label>
+    <input type="text" id="node-config-input-token" placeholder="Jira Token">
   </div>
 </script>
 
